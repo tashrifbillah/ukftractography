@@ -1,16 +1,10 @@
 
 set(proj VTK)
 
-option(USE_VTK_6 "Build using VTK version 6" OFF)
-if(USE_VTK_6)
-  set(${proj}_REQUIRED_VERSION "6.10")  #If a required version is necessary, then set this, else leave blank
-else()
-  set(${proj}_REQUIRED_VERSION "5.10")  #If a required version is necessary, then set this, else leave blank
-endif()
+set(${proj}_REQUIRED_VERSION "6.10")  #If a required version is necessary, then set this, else leave blank
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "zlib")
-
 if (${PROJECT_NAME}_USE_PYTHONQT)
   list(APPEND ${proj}_DEPENDENCIES python)
 endif()
@@ -26,11 +20,11 @@ endif()
 
 # Sanity checks
 if(DEFINED VTK_DIR AND NOT EXISTS ${VTK_DIR})
-  message(FATAL_ERROR "VTK_DIR variable is defined but corresponds to non-existing directory")
+  message(FATAL_ERROR "VTK_DIR variable is defined but corresponds to nonexistent directory")
 endif()
 
 if(DEFINED VTK_SOURCE_DIR AND NOT EXISTS ${VTK_SOURCE_DIR})
-  message(FATAL_ERROR "VTK_SOURCE_DIR variable is defined but corresponds to non-existing directory")
+  message(FATAL_ERROR "VTK_SOURCE_DIR variable is defined but corresponds to nonexistent directory")
 endif()
 
 
@@ -79,11 +73,9 @@ if((NOT DEFINED VTK_DIR OR NOT DEFINED VTK_SOURCE_DIR) AND NOT ${CMAKE_PROJECT_N
         -DQT_QMAKE_EXECUTABLE:FILEPATH=${QT_QMAKE_EXECUTABLE}
         )
     endif()
-    if(USE_VTK_6)
-      list(APPEND EXTERNAL_PROJECT_OPTIONAL_ARGS
+    list(APPEND EXTERNAL_PROJECT_OPTIONAL_ARGS
         -DModule_vtkGUISupportQt:BOOL=ON
         -DModule_vtkGUISupportQtOpenGL:BOOL=ON)
-    endif()
   else()
     list(APPEND EXTERNAL_PROJECT_OPTIONAL_ARGS
         -DVTK_USE_GUISUPPORT:BOOL=OFF
@@ -91,11 +83,9 @@ if((NOT DEFINED VTK_DIR OR NOT DEFINED VTK_SOURCE_DIR) AND NOT ${CMAKE_PROJECT_N
         )
   endif()
 
-  if(USE_VTK_6)
-    list(APPEND EXTERNAL_PROJECT_OPTIONAL_ARGS
+  list(APPEND EXTERNAL_PROJECT_OPTIONAL_ARGS
       -DModule_vtkGUISupportQt:BOOL=ON
       -DModule_vtkGUISupportQtOpenGL:BOOL=ON)
-  endif()
 
   # Disable Tk when Python wrapping is enabled
   if(${PRIMARY_PROJECT_NAME}_USE_PYTHONQT)
@@ -130,23 +120,12 @@ if((NOT DEFINED VTK_DIR OR NOT DEFINED VTK_SOURCE_DIR) AND NOT ${CMAKE_PROJECT_N
       -P ${CMAKE_CURRENT_BINARY_DIR}/VTK_build_step.cmake)
   endif()
 
-  # Slicer settings
-  # set(${CMAKE_PROJECT_NAME}_${proj}_GIT_REPOSITORY 
-  #   "github.com/Slicer/VTK.git" CACHE STRING "Repository from which to get VTK" FORCE)
-  # set(${CMAKE_PROJECT_NAME}_${proj}_GIT_TAG
-  #   "c88dfedb277969e5f1f6c5349d8f7898610e75f4" CACHE STRING "VTK git tag to use" FORCE)
-  #
   # mark_as_advanced(${CMAKE_PROJECT_NAME}_${proj}_GIT_REPOSITORY ${CMAKE_PROJECT_NAME}_${proj}_GIT_TAG)
   if(NOT DEFINED git_protocol)
     set(git_protocol "git")
   endif()
-  if(USE_VTK_6)
-    set(${proj}_REPOSITORY ${git_protocol}://vtk.org/VTK.git)
-    set(${proj}_GIT_TAG "3702626745922c5677a4562a00eb2d58dda17f52")
-  else()
-    set(${proj}_REPOSITORY ${git_protocol}://github.com/BRAINSia/VTK.git)
-    set(${proj}_GIT_TAG "80b124ff13bbab363bece53e850ba50f139a9d93")
-  endif()
+  set(${proj}_REPOSITORY "${git_protocol}://github.com/Slicer/VTK.git" CACHE STRING "Repository from which to get VTK" FORCE)
+  set(${proj}_GIT_TAG "c501ccc5df46d33fa15ae1e5df94459f3b98c52b" CACHE STRING "VTK git tag to use" FORCE)
 
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
