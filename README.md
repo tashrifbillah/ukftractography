@@ -75,7 +75,7 @@ of your build folder.
 
 In order to see all options run.
 
-    ./UKFTractography --help 
+    UKFTractography/build/UKFTractography-build/UKFTractography/bin/UKFTractography --help 
 
 In the source directory of the project you will find a shell script called 'sample_run.sh'
 It should give you an idea of what a function call could look like. 
