@@ -1,6 +1,5 @@
 
-set(proj ITKv4)
-set(ITK_EXTERNAL_NAME ${proj})
+set(proj ITK)
 # Set dependency list
 set(${proj}_DEPENDENCIES "zlib")
 
@@ -27,7 +26,7 @@ if(NOT DEFINED ITK_DIR AND NOT ${CMAKE_PROJECT_NAME}_USE_SYSTEM_${proj})
 
   ExternalProject_SetIfNotDefined(
     ${CMAKE_PROJECT_NAME}_${proj}_GIT_TAG
-    "f9ae0a051440b674c82dfa41c5054b2c7308417e" # slicer-v4.13.0-2017-12-20-d92873e-2
+    "f9ae0a051440b674c82dfa41c5054b2c7308417e" # 9825d546c457ebe84948fd6f9db3d2a966811ace # slicer-v4.13.0-2017-12-20-d92873e-2
     QUIET
     )
 
@@ -36,16 +35,6 @@ if(NOT DEFINED ITK_DIR AND NOT ${CMAKE_PROJECT_NAME}_USE_SYSTEM_${proj})
     # where long is only 32-bits (msvc)
     set(EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS
       -DITK_USE_64BITS_IDS:BOOL=ON
-      )
-  endif()
-
-  if(${CMAKE_PROJECT_NAME}USE_PYTHONQT)
-    # XXX Ensure python executable used for ITKModuleHeaderTest
-    #     is the same as Slicer.
-    #     This will keep the sanity check implemented in SlicerConfig.cmake
-    #     quiet.
-    list(APPEND EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS
-      -DPYTHON_EXECUTABLE:PATH=${PYTHON_EXECUTABLE}
       )
   endif()
 
@@ -60,6 +49,7 @@ if(NOT DEFINED ITK_DIR AND NOT ${CMAKE_PROJECT_NAME}_USE_SYSTEM_${proj})
     SOURCE_DIR ${EP_SOURCE_DIR}
     BINARY_DIR ${EP_BINARY_DIR}
     CMAKE_CACHE_ARGS
+	  -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
       -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
       -DCMAKE_CXX_FLAGS:STRING=${ep_common_cxx_flags}
       -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}

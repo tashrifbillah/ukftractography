@@ -96,7 +96,7 @@ void UnscentedKalmanFilter::Constrain(ukfVectorType& x, const ukfMatrixType& W)
 // matrix version
 void UnscentedKalmanFilter::Constrain(ukfMatrixType& localX, const ukfMatrixType& localW)
 {
-  const unsigned int numCols = localX.cols();
+  const unsigned int numCols = static_cast<unsigned int>(localX.cols());
 
   for( unsigned int i = 0; i < numCols; ++i )
     {
@@ -205,7 +205,7 @@ void UnscentedKalmanFilter::Filter(const State& x,
   //const ukfMatrixType WeightsRepeated_Y_Transpose =m_WeightsRepeated*Y_.transpose();
 
   const ukfMatrixType temp = localConstFilterModel->R();
-  int R = 1/temp(0,0);
+  ukfPrecisionType R = 1/temp(0,0);
 
   /** Covariance of the signal */
   //const ukfMatrixType Pyy = Y_ * WeightsRepeated_Y_Transpose + R;

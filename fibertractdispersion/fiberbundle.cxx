@@ -90,7 +90,7 @@ fiberbundle
   for(FiberVector::iterator it = this->m_FiberBundle.begin();
       it != this->m_FiberBundle.end(); ++it)
     {
-    int fiber_size = (*it).Points.size();
+    int fiber_size = static_cast<int>((*it).Points.size());
     vtkIdType *ids = new vtkIdType[fiber_size];
     for(vtkIdType curPoint = 0; curPoint < fiber_size; ++curPoint,++counter)
       {
@@ -211,14 +211,14 @@ fiberbundle
                 << curFiber.Points[i][2] << " "
                 << "]" << std::endl;
       }
-    for(Fiber::FieldMapType::const_iterator it = curFiber.Fields.begin();
-        it != curFiber.Fields.end(); ++it)
+    for(Fiber::FieldMapType::const_iterator curFiberIt = curFiber.Fields.begin();
+        curFiberIt != curFiber.Fields.end(); ++curFiberIt)
       {
-      std::cerr << "  " << it->first << ":" << std::endl << "    ";
-      for(unsigned int i = 0; i < it->second.size(); ++i)
+      std::cerr << "  " << curFiberIt->first << ":" << std::endl << "    ";
+      for(unsigned int i = 0; i < curFiberIt->second.size(); ++i)
         {
-        std::cerr << it->second[i];
-        if(i == it->second.size() - 1)
+        std::cerr << curFiberIt->second[i];
+        if(i == curFiberIt->second.size() - 1)
           {
           std::cerr << endl;
           }

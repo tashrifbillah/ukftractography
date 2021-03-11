@@ -1,4 +1,9 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.7)
+
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW) #3.12.0 `find_package()`` uses ``<PackageName>_ROOT`` variables.
+endif()
+
 #-----------------------------------------------------------------------------
 # Enable C++11
 #-----------------------------------------------------------------------------
@@ -12,7 +17,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 message(STATUS "${_msg} - C++${CMAKE_CXX_STANDARD}")
 
 #-----------------------------------------------------------------------------
-set(UKF_SRC "${CMAKE_CURRENT_SOURCE_DIR}")
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/CMake)
 include(SlicerBlockSetCMakeOSXVariables)
 
@@ -36,13 +40,12 @@ set(PRIMARY_PROJECT_NAME UKFTractography)
 #-----------------------------------------------------------------------------
 
 #-----------------------------------------------------------------------------
+# Extension meta-information
+#-----------------------------------------------------------------------------
 set(EXTENSION_NAME  UKFTractography)
 set(EXTENSION_HOMEPAGE "http://www.nitrc.org/plugins/mwiki/index.php/ukftractography:MainPage")
 set(EXTENSION_CATEGORY "Diffusion.Tractography")
 set(EXTENSION_CONTRIBUTORS "Yogesh Rathi, Stefan Lienhard, Yinpeng Li, Martin Styner, Ipek Oguz, Yundi Shi, Christian Baumgartner, Ryan Eckbo, Kent Williams, Hans Johnson, Peter Savadjiev, Carl-Fredrik Westin")
-set(EXTENSION_MAJOR_VERSION 1)
-set(EXTENSION_MINOR_VERSION 2)
-set(EXTENSION_PATCH_VERSION 0)
 set(EXTENSION_STATUS "Alpha")
 set(EXTENSION_DEPENDS "NA")
 set(EXTENSION_DESCRIPTION "This module traces fibers in a DWI Volume using the multiple tensor unscented Kalman Filter methology. ")
@@ -66,6 +69,14 @@ endif()
 #-----------------------------------------------------------------------------
 option(${PRIMARY_PROJECT_NAME}_SUPERBUILD "Build ${PRIMARY_PROJECT_NAME} and the projects it depends on via SuperBuild.cmake." ${default_superbuild_value})
 mark_as_advanced(${PRIMARY_PROJECT_NAME}_SUPERBUILD)
+
+#-----------------------------------------------------------------------------
+# Additional CXX/C Flags
+#-----------------------------------------------------------------------------
+set(ADDITIONAL_C_FLAGS "" CACHE STRING "Additional C Flags")
+mark_as_advanced(ADDITIONAL_C_FLAGS)
+set(ADDITIONAL_CXX_FLAGS "" CACHE STRING "Additional CXX Flags")
+mark_as_advanced(ADDITIONAL_CXX_FLAGS)
 
 #-----------------------------------------------------------------------------
 # Required by Slicer extension build system for reasons. See

@@ -45,7 +45,7 @@ else()
     set (Eigen_DIR ${CMAKE_CURRENT_BINARY_DIR}/Eigen)
     set (Eigen_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/Eigen-build)
     ExternalProject_Add(
-      Eigen
+      UKF-Eigen
       DOWNLOAD_DIR      ${Eigen_DIR}
       SOURCE_DIR        ${Eigen_DIR}
       BINARY_DIR        ${Eigen_BUILD_DIR}
@@ -77,6 +77,13 @@ endif()
 
 #-----------------------------------------------------------------------------
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/common)
+set(UKF_STATIC)
+if(NOT BUILD_SHARED_LIBS)
+    set(UKF_STATIC 1)
+    if(WIN32)
+        add_definitions("-DUKF_STATIC")
+    endif()
+endif()
 add_subdirectory(ukf)
 add_subdirectory(UKFTractography)
 
@@ -99,6 +106,7 @@ endif()
 
 #-----------------------------------------------------------------------------
 if(${PRIMARY_PROJECT_NAME}_BUILD_SLICER_EXTENSION)
+  include(${Slicer_EXTENSION_GENERATE_CONFIG})
   include(${Slicer_EXTENSION_CPACK})
 endif()
 

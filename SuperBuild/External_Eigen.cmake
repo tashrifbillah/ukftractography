@@ -10,7 +10,7 @@ if(DEFINED ${extProjName}_DIR AND NOT EXISTS ${${extProjName}_DIR})
 endif()
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "")
+set(${proj}_DEPENDENCIES Boost)
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} PROJECT_VAR proj DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -46,10 +46,9 @@ if(NOT ( DEFINED "USE_SYSTEM_${extProjName}" AND "${USE_SYSTEM_${extProjName}}" 
     LOG_BUILD     0  # Wrap build in script to to ignore log output from dashboards
     LOG_TEST      0  # Wrap test in script to to ignore log output from dashboards
     LOG_INSTALL   0  # Wrap install in script to to ignore log output from dashboards
-    ${cmakeversion_external_update} "${cmakeversion_external_update_value}"
     INSTALL_DIR ${${proj}_INSTALL_DIR}
     CMAKE_GENERATOR ${gen}
-    CMAKE_ARGS -Wno-dev --no-warn-unused-cli
+    CMAKE_ARGS -Wno-dev --no-warn-unused-cli -DBOOST_ROOT:PATH=${BOOST_ROOT} -DBoost_NO_BOOST_CMAKE:BOOL=TRUE -DBoost_NO_SYSTEM_PATHS:BOOL=TRUE -DBoost_LIBRARY_DIRS:FILEPATH=${BOOST_ROOT}/lib
     CMAKE_CACHE_ARGS
       ${CMAKE_OSX_EXTERNAL_PROJECT_ARGS}
       ${COMMON_EXTERNAL_PROJECT_ARGS}
